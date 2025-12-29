@@ -87,6 +87,18 @@
             transition: 0.3s;
         }
 
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
         .section {
             padding: 100px 20px;
             min-height: 100vh;
@@ -436,6 +448,102 @@
             transform: translateY(0);
         }
 
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #f39c12; }
+        }
+
+        .typing {
+            overflow: hidden;
+            border-right: 3px solid #f39c12;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(243, 156, 18, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(243, 156, 18, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(243, 156, 18, 0.5); }
+        }
+
+        .glow {
+            animation: glow 2s infinite;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .navbar .nav-links a {
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: #f39c12;
+            transition: all 0.3s;
+        }
+
+        .navbar .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .room-card, .service-item, .gallery-item, .testimonial-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .room-card:hover, .service-item:hover, .gallery-item:hover, .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn {
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        }
+
         @media (max-width: 768px) {
             .navbar .nav-links {
                 display: none;
@@ -473,7 +581,7 @@
 <body>
     <nav class="navbar">
         <div class="container">
-            <div class="logo">Regal Stay</div>
+            <div class="logo bounce-in">Regal Stay</div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -492,9 +600,9 @@
 
     <section id="home" class="section">
         <div class="overlay">
-            <h1>Welcome to Regal Stay</h1>
+            <h1 class="typing">Welcome to Regal Stay</h1>
             <p>Experience luxury and comfort in the heart of the city</p>
-            <a href="#rooms" class="btn">Explore Rooms</a>
+            <a href="#rooms" class="btn pulse">Explore Rooms</a>
         </div>
     </section>
 
@@ -609,7 +717,7 @@
                 <input type="text" placeholder="Your Name" required>
                 <input type="email" placeholder="Your Email" required>
                 <textarea placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
+                <button type="submit" class="glow">Send Message</button>
             </form>
         </div>
     </section>
@@ -617,11 +725,11 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
+                <div class="footer-section slide-up">
                     <h3>Regal Stay</h3>
                     <p>Experience luxury and elegance in the heart of the city.</p>
                 </div>
-                <div class="footer-section">
+                <div class="footer-section slide-up">
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="#home">Home</a></li>
@@ -632,13 +740,13 @@
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
+                <div class="footer-section slide-up">
                     <h3>Contact Info</h3>
                     <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
                     <p><i class="fas fa-envelope"></i> info@regalstay.com</p>
                     <p><i class="fas fa-map-marker-alt"></i> 123 Luxury Ave, City, State</p>
                 </div>
-                <div class="footer-section">
+                <div class="footer-section slide-up">
                     <h3>Follow Us</h3>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -672,11 +780,12 @@
             }
         });
 
-        // Mobile menu toggle
+        // Mobile menu toggle with animation
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
         hamburger.addEventListener('click', function() {
             navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
         });
 
         // Smooth scrolling
@@ -718,6 +827,27 @@
 
         document.querySelectorAll('.room-grid, .service-grid, .gallery-grid, .testimonial-grid').forEach(grid => {
             staggerObserver.observe(grid);
+        });
+
+        // Form submit animation
+        const contactForm = document.querySelector('.contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const button = contactForm.querySelector('button');
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                button.textContent = 'Message Sent!';
+                button.classList.add('glow');
+                setTimeout(() => {
+                    button.textContent = 'Send Message';
+                    button.disabled = false;
+                    button.classList.remove('glow');
+                    contactForm.reset();
+                }, 2000);
+            }, 1000);
         });
     </script>
 </body>
