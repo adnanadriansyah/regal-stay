@@ -32,4 +32,10 @@ console.log(`Attempting to start server on port ${PORT}...`);
 
 app.listen(PORT, () => {
   console.log(`API running on port ${PORT}`);
+  console.log(`Server will keep running...`);
 });
+
+// Keep the event loop alive
+setInterval(() => {
+  // Keep alive
+}, 1000);
