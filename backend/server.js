@@ -3,7 +3,7 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Database setup
 const db = new sqlite3.Database('./hotel.db', (err) => {
@@ -172,18 +172,18 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Regal Stay Backend is running' });
 });
 
-// Graceful shutdown
-process.on('SIGINT', () => {
-  console.log('Received SIGINT, shutting down gracefully...');
-  db.close((err) => {
-    if (err) {
-      console.error('Error closing database:', err.message);
-    } else {
-      console.log('Database connection closed.');
-    }
-    process.exit(0);
-  });
-});
+// Graceful shutdown - commented out for testing
+// process.on('SIGINT', () => {
+//   console.log('Shutting down server...');
+//   db.close((err) => {
+//     if (err) {
+//       console.error('Error closing database:', err.message);
+//     } else {
+//       console.log('Database connection closed.');
+//     }
+//     process.exit(0);
+//   });
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
