@@ -1,21 +1,6 @@
 # Regal Stay Backend
 
-Backend API for Regal Stay hotel management system with SQLite database.
-
-## Features
-
-- SQLite database for data persistence
-- RESTful API for rooms, bookings, and users
-- CORS enabled for frontend integration
-- Automatic database initialization with sample data
-
-## Database Schema
-
-### Tables
-
-- **rooms**: Room information (id, name, type, price, description, capacity, amenities, image_url)
-- **users**: User accounts (id, name, email, password, phone, role)
-- **bookings**: Room bookings (id, user_id, room_id, check_in, check_out, guests, total_price, status)
+Simple Express.js API for Regal Stay hotel management system.
 
 ## Setup on Debian 13 VM
 
@@ -36,69 +21,33 @@ curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
-3. Clone or copy the backend code to your VM:
+3. Create a directory for your project:
 ```bash
-# Assuming you have the code in a directory
-cd /path/to/backend
+mkdir regal-stay-backend
+cd regal-stay-backend
 ```
 
-4. Install dependencies:
+4. Create package.json:
 ```bash
-npm install
+npm init -y
 ```
 
-5. Initialize the database with sample data:
+5. Install dependencies:
 ```bash
-npm run init-db
+npm install express cors
 ```
 
-6. Start the server:
-```bash
-npm start
-```
+6. Create index.js with the API code (see index.js file)
 
-For development with auto-restart:
+7. Start the server:
 ```bash
-npm run dev
+node index.js
 ```
 
 ### API Endpoints
 
-- `GET /api/rooms` - Get all available rooms
-- `GET /api/rooms/:id` - Get room by ID
-- `GET /api/bookings` - Get all bookings
-- `POST /api/bookings` - Create a new booking
-- `POST /api/users` - Create a new user
-- `GET /health` - Health check
-
-### Sample API Usage
-
-#### Get Rooms
-```bash
-curl http://localhost:3000/api/rooms
-```
-
-#### Create Booking
-```bash
-curl -X POST http://localhost:3000/api/bookings \
-  -H "Content-Type: application/json" \
-  -d '{
-    "user_id": 1,
-    "room_id": 1,
-    "check_in": "2025-01-15",
-    "check_out": "2025-01-17",
-    "guests": 2,
-    "total_price": 300000
-  }'
-```
-
-### Networking
-
-Make sure your VM's firewall allows traffic on port 3000:
-
-```bash
-sudo ufw allow 3000
-```
+- `GET /` - Health check
+- `GET /api/rooms` - Get all rooms
 
 ### Running in Background
 
@@ -111,7 +60,7 @@ sudo npm install -g pm2
 
 2. Start the application:
 ```bash
-pm2 start server.js --name "regal-stay-backend"
+pm2 start index.js --name "regal-stay-backend"
 ```
 
 3. Save PM2 configuration:
@@ -120,30 +69,12 @@ pm2 save
 pm2 startup
 ```
 
-### Database Management
+### Networking
 
-The SQLite database file `hotel.db` will be created in the backend directory. For production, consider:
+Make sure your VM's firewall allows traffic on port 3000:
 
-- Regular backups of `hotel.db`
-- Database migration scripts for schema changes
-- Connection pooling for high traffic
-
-### Alternative: PostgreSQL Setup
-
-For production environments, you can switch to PostgreSQL:
-
-1. Install PostgreSQL:
 ```bash
-sudo apt install postgresql postgresql-contrib
+sudo ufw allow 3000
 ```
 
-2. Create database and user:
-```bash
-sudo -u postgres psql
-CREATE DATABASE regal_stay;
-CREATE USER hotel_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE regal_stay TO hotel_user;
-\q
-```
-
-3. Update connection string in server.js and install `pg` package instead of `sqlite3`
+The API will be accessible at `http://your-vm-ip:3000/api/rooms`
