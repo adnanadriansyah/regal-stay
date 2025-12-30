@@ -630,6 +630,7 @@
     <section id="rooms" class="section fade-in">
         <div class="container">
             <h2 class="zoom-in">Our Rooms</h2>
+            <ul id="rooms"></ul>
             <div class="room-grid">
                 <div class="room-card stagger">
                     <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Deluxe Room">
@@ -863,6 +864,22 @@
                 }, 2000);
             }, 1000);
         });
+
+        // Fetch rooms from API
+        fetch("http://192.168.252.128:3000/api/rooms")
+          .then(res => res.json())
+          .then(data => {
+            console.log(data);
+
+            // contoh tampilkan ke HTML
+            const list = document.getElementById("rooms");
+            data.forEach(room => {
+              const li = document.createElement("li");
+              li.textContent = `${room.room} - Rp ${room.price}`;
+              list.appendChild(li);
+            });
+          })
+          .catch(err => console.error(err));
     </script>
 </body>
 </html>
